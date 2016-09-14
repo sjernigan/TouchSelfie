@@ -46,7 +46,7 @@ oauth2_refresh_period = 1800000
     logopng = conf.get('main', 'logopng') # "logo.png"
 
     if os.path.exists(logopng):
-        logo = Image.open(logopng)
+        logo = Image.open(logopng).convert('RGBA')
         lxsize, lysize = logo.size
     else:
         logo = None
