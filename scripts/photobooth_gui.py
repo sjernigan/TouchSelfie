@@ -10,10 +10,13 @@ from tkkb import Tkkb
 import time
 from Tkinter import *
 import tkMessageBox
-import ImageTk
+import PIL
+from PIL import ImageTk
+#import ImageTk
 from mailfile import *
 import custom
-import Image
+#import Image
+from PIL import Image
 import config
 from constants import *
 
