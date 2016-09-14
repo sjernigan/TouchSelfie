@@ -111,6 +111,17 @@ def snap(can, countdown1, effect='None'):
         if effect == 'None':
             camera.capture(custom.RAW_FILENAME, resize=(1366, 768))
             snapshot = Image.open(custom.RAW_FILENAME)
+            if custom.logo is not None:
+                # snapshot.paste(logo,(0,SCREEN_H -lysize ),logo)
+                # snapshot.paste(custom.logo,(SCREEN_W/2 - custom.logo.size[0]/2,
+                #                             SCREEN_H -custom.lysize ),
+                #                             custom.logo)
+                size = snapshot.size
+                logo_size = custom.logo.size
+                yoff = size[1] - logo_size[1]
+                xoff = (size[0] - logo_size[0]) // 2
+                snapshot.paste(custom.logo,(xoff, yoff),
+                               custom.logo)
         elif effect == 'Warhol': 
             #  set light to R, take photo, G, take photo, B, take photo, Y, take photo
             # merge results into one image
@@ -144,20 +155,19 @@ def snap(can, countdown1, effect='None'):
             snapshot.paste(Image.open(custom.RAW_FILENAME[:-4] + '_3.' + custom.EXT).resize((683, 384)), (  0, 384,  683, 768))
             snapshot.paste(Image.open(custom.RAW_FILENAME[:-4] + '_4.' + custom.EXT).resize((683, 384)), (683, 384, 1366, 768))
             
+            if custom.logo is not None:
+                # snapshot.paste(logo,(0,SCREEN_H -lysize ),logo)
+                # snapshot.paste(custom.logo,(SCREEN_W/2 - custom.logo.size[0]/2,
+                #                             SCREEN_H -custom.lysize ),
+                #                             custom.logo)
+                size = snapshot.size
+                logo_size = custom.logo.size
+                yoff = size[1] - logo_size[1] //2
+                xoff = (size[0] - logo_size[0]) // 4
+                snapshot.paste(custom.logo,(xoff, yoff),
+                               custom.logo)
         camera.close()
             
-    
-        if custom.logo is not None:
-            # snapshot.paste(logo,(0,SCREEN_H -lysize ),logo)
-            # snapshot.paste(custom.logo,(SCREEN_W/2 - custom.logo.size[0]/2,
-            #                             SCREEN_H -custom.lysize ),
-            #                             custom.logo)
-            size = snapshot.size
-            logo_size = custom.logo.size
-            yoff = size[1] - logo_size[1]
-            xoff = (size[0] - logo_size[0]) // 2
-            snapshot.paste(custom.logo,(xoff, yoff),
-                           custom.logo)
         snapshot.save(custom.PROC_FILENAME)
     except Exception, e:
         print e
