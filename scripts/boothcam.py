@@ -163,7 +163,7 @@ def snap(can, countdown1, effect='None'):
                 size = snapshot.size
                 logo_size = custom.logo.size
                 yoff = size[1] - logo_size[1] //2
-                xoff = (size[0] - logo_size[0]) // 4
+                xoff = (size[0] - logo_size[0]) // 2
                 snapshot.paste(custom.logo,(xoff, yoff),
                                custom.logo)
         camera.close()
