@@ -3,8 +3,8 @@ import Tkinter
 import tkFileDialog
 import tkSimpleDialog
 import os.path
-import Image
-import ImageTk
+from PIL import Image
+from PIL import ImageTk
 import ConfigParser
 import os.path
 from constants import SCREEN_W, SCREEN_H
@@ -46,7 +46,7 @@ oauth2_refresh_period = 1800000
     logopng = conf.get('main', 'logopng') # "logo.png"
 
     if os.path.exists(logopng):
-        logo = Image.open(logopng)
+        logo = Image.open(logopng).convert('RGBA')
         lxsize, lysize = logo.size
     else:
         logo = None
