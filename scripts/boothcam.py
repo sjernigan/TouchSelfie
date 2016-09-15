@@ -26,6 +26,8 @@ import serial
 import config
 import custom
 import httplib2
+import RPi.GPIO as GPIO
+
 
 from constants import SCREEN_W, SCREEN_H, WHITE, BLACK
 
@@ -141,13 +143,24 @@ def snap(can, countdown1, effect='None'):
             snapshot.paste(Image.open(custom.RAW_FILENAME[:-4] + '_4.' + custom.EXT).resize((683, 384)), (683, 384, 1366, 768))
         elif effect == "Four":
             # take 4 photos and merge into one image.
+            GPIO.output(18, GPIO.HIGH)  #3.3v
             camera.capture(custom.RAW_FILENAME[:-4] + '_1.' + custom.EXT, resize=(683, 384))
+            GPIO.output(18, GPIO.LOW)
             countdown(camera, can, custom.countdown2)
+
+            GPIO.output(18, GPIO.HIGH)  #3.3v
             camera.capture(custom.RAW_FILENAME[:-4] + '_2.' + custom.EXT, resize=(683, 384))
+            GPIO.output(18, GPIO.LOW)
             countdown(camera, can, custom.countdown2)
+
+            GPIO.output(18, GPIO.HIGH)  #3.3v
             camera.capture(custom.RAW_FILENAME[:-4] + '_3.' + custom.EXT, resize=(683, 384))
+            GPIO.output(18, GPIO.LOW)
             countdown(camera, can, custom.countdown2)
+
+            GPIO.output(18, GPIO.HIGH)  #3.3v
             camera.capture(custom.RAW_FILENAME[:-4] + '_4.' + custom.EXT, resize=(683, 384))
+            GPIO.output(18, GPIO.LOW)
 
             snapshot = Image.new('RGBA', (1366, 768))
             snapshot.paste(Image.open(custom.RAW_FILENAME[:-4] + '_1.' + custom.EXT).resize((683, 384)), (  0,   0,  683, 384))

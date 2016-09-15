@@ -7,6 +7,7 @@ import Image
 import ImageTk
 import ConfigParser
 import os.path
+import RPi.GPIO as GPIO
 from constants import SCREEN_W, SCREEN_H
 
 install_dir = os.path.abspath(os.path.join(os.path.split(os.path.abspath(__file__))[0],  '..'))
@@ -68,6 +69,12 @@ oauth2_refresh_period = 1800000
     ARCHIVE = bool(conf.get('main', 'ARCHIVE')) # True ## archive photos?
     archive_dir = conf.get('main', 'archive_dir') # './'
     oauth2_refresh_period = int(conf.get('main', 'oauth2_refresh_period')) # 1800000
+
+    #set up GPIO using BCM numbering
+    GPIO.setmode(GPIO.BCM)
+    #setup GPIO using Board numbering
+    #GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(18, GPIO.OUT) 
 
 restore_conf()
 
@@ -245,6 +252,7 @@ def customize(master):
         close()
     def close():
         self.destroy()
+        GPIO.cleanup()
 
     def logo_dialog():
         global logopng
