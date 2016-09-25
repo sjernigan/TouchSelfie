@@ -177,7 +177,7 @@ def check_and_snap(force=False, countdown1=None):
             last_snap = time.time()
             display_image(im)
             can.delete("text")
-            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Uploading Image", font=custom.CANVAS_FONT, tags="text")
+            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Now email it to yourself", font=custom.CANVAS_FONT, tags="text")
             can.update()
             if signed_in:
                 if custom.albumID == 'None':
@@ -291,7 +291,9 @@ root.geometry("%dx%d+0+0" % (WIDTH, HEIGHT))
 root.focus_set() # <-- move focus to this widget
 frame = Frame(root)
 
-# Button(frame, text="Exit", command=on_close).pack(side=LEFT)
+#b = Button(frame, text="exit", command=on_close) 
+#b.pack(side=LEFT)
+
 Button(frame, text="Customize", command=lambda *args: custom.customize(root)).pack(side=LEFT)
 tkkb_button = Button(frame, command=launch_tkkb, text="Launch-KB")
 # tkkb_button.pack(side=LEFT)
