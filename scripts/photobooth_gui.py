@@ -233,7 +233,13 @@ def force_snap(countdown1=None):
 
 #if they enter an email address send photo. add error checking
 def sendPic(*args):
-    if signed_in:
+    if email_addr.get() == "exit":
+        if root.after_id is not None:
+            root.after_cancel(root.after_id)
+        root.quit()
+    elif email_addr.get() == "customize":
+        custom.customize(root).pack(side=LEFT)
+    elif signed_in:
         print 'sending photo by email to %s' % email_addr.get()
         try:
             sendMail(email_addr.get().strip(),
@@ -294,7 +300,7 @@ frame = Frame(root)
 #b = Button(frame, text="exit", command=on_close) 
 #b.pack(side=LEFT)
 
-Button(frame, text="Customize", command=lambda *args: custom.customize(root)).pack(side=LEFT)
+#Button(frame, text="Customize", command=lambda *args: custom.customize(root)).pack(side=LEFT)
 tkkb_button = Button(frame, command=launch_tkkb, text="Launch-KB")
 # tkkb_button.pack(side=LEFT)
 send_button = Button(frame, text="SendEmail", command=sendPic, font=custom.BUTTON_FONT)
@@ -352,7 +358,7 @@ force_snap(countdown1=0)
 root.after(200, check_and_snap)
 if custom.SIGN_ME_IN:
     root.after(custom.oauth2_refresh_period, refresh_oauth2_credentials)
-root.wm_title("Photobooth")
+root.wm_title("Wyolum Photobooth")
 etext.focus_set()
 # etext.bind("<Enter>", sendPic)
 on_rgb_change()
