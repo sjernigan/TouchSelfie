@@ -15,7 +15,7 @@ conf_filename = os.path.join(install_dir, 'scripts', 'openselfie.conf')
 
 def restore_conf():
     global emailSubject, emailMsg, photoCaption, logopng, albumID, countdown1, countdown2
-    global TIMELAPSE, SIGN_ME_IN, ARCHIVE, archive_dir, logo, lxsize, lysize, oauth2_refresh_period
+    global SIGN_ME_IN, ARCHIVE, archive_dir, logo, lxsize, lysize, oauth2_refresh_period
 
     if not os.path.exists(conf_filename):
         conf_file = open(conf_filename, 'w')
@@ -28,7 +28,6 @@ logopng = logo.png
 albumid = None
 countdown1 = 5
 countdown2 = 3
-timelapse = 0
 sign_me_in = True
 archive = True
 archive_dir = %s/Photos/
@@ -60,7 +59,6 @@ oauth2_refresh_period = 1800000
     countdown1 = int(conf.get('main', 'countdown1')) # 5 ## how many seconds to count down before a photo is taken
     countdown2 = int(conf.get('main', 'countdown2')) # 3 ## how many seconds to count down before subsequent photos are taken
 
-    TIMELAPSE = float(conf.get('main', 'TIMELAPSE')) # 0 ## use 0 for no time lapse photos, at least 3 (seconds)
     SIGN_ME_IN = conf.get('main', 'SIGN_ME_IN')
     if SIGN_ME_IN == "True":
         SIGN_ME_IN = True
@@ -87,6 +85,7 @@ FONT_COLOR = "orange"
 EXT = 'jpg'     
 RAW_FILENAME = 'image.' + EXT
 PROC_FILENAME = 'photo.' + EXT
+SPLASH_FILENAME = 'splash1366x768.jpg'
 
 class AskBoolean(tkSimpleDialog.Dialog):
     def apply(self):
@@ -186,13 +185,6 @@ def customize(master):
             wid.config(bg='red')
             pass
 
-    def update_timelapse(var, wid):
-        global TIMELAPSE
-        try:
-            wid.config(bg='white')
-            TIMELAPSE = float(var.get())
-        except:
-            wid.config(bg='red')
     def update_sign_me_in(var, wid):
         global SIGN_ME_IN
         wid.config(bg='white')
@@ -240,7 +232,6 @@ def customize(master):
             conf.set('main', 'albumID', albumID)
             conf.set('main', 'countdown1', countdown1)
             conf.set('main', 'countdown2', countdown2)
-            conf.set('main', 'TIMELAPSE', TIMELAPSE)
             conf.set('main', 'SIGN_ME_IN', SIGN_ME_IN)
             conf.set('main', 'ARCHIVE', ARCHIVE)
             conf.set('main', 'archive_dir', archive_dir)
@@ -293,7 +284,6 @@ def customize(master):
     
     string_customizer('Countdown1', countdown1, update_countdown1)
     string_customizer('Countdown2', countdown2, update_countdown2)
-    string_customizer('Timelapse', TIMELAPSE, update_timelapse)
     bool_customizer('Sign me in', SIGN_ME_IN, update_sign_me_in)
     archive_var = Tkinter.StringVar()
     archive_var.set(archive_dir)
@@ -338,7 +328,6 @@ if __name__ == '__main__':
     print photoCaption
     print countdown1
     print countdown2
-    print TIMELAPSE
     print ARCHIVE
     print archive_dir
     print logopng

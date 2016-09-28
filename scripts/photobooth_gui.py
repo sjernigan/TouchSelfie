@@ -41,7 +41,7 @@ SCALE = 1.8
 # COUNTDOWN1 = custom.countdown1 ### use custom.countdown1 reference directly
 
 ## put the status widget below the displayed image
-STATUS_H_OFFSET = 150 ## was 210
+STATUS_H_OFFSET = 100 ## was 210
 
 ## only accept button inputs from the AlaMode when ready
 Button_enabled = False
@@ -155,15 +155,12 @@ def check_and_snap(force=False, countdown1=None):
         #im = snap(can, countdown1=countdown1, effect='None')
         im = snap(can, countdown1=countdown1, effect='Four')
         if im is not None:
-            if custom.TIMELAPSE > 0:
-                togo = custom.TIMELAPSE - (time.time() - last_snap)
-            else:
-                togo = 1e8
-            last_snap = time.time()
             display_image(im)
             can.delete("text")
             can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Now email it to yourself", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
             can.update()
+            time.sleep(2)
+            launch_tkkb()
             if signed_in:
                 if custom.albumID == 'None':
                     global albumID_informed
@@ -232,30 +229,31 @@ def sendPic(*args):
             kill_tkkb()
         except Exception, e:
             print 'Send Failed::', e
-            can.delete("all")
-            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Send Failed", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+            can.delete("text")
+            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Send failed, bad address", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
             can.update()
-            time.sleep(1)
+            time.sleep(3)
             can.delete("all")
             im = Image.open(custom.PROC_FILENAME)
             display_image(im)
-            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Press button when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+            can.update()
+
+            time.sleep(10)
+            etext.delete(0, END)
+            can.delete("all")
+            im = Image.open(custom.SPLASH_FILENAME)
+            display_image(im)
+            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
             can.update()
     else:
         print 'Not signed in'
 
 #ser = findser()
 
-def delay_timelapse(*args):
-    '''
-    Prevent a timelapse snapshot when someone is typeing an email address
-    '''
-    global last_snap
-    last_snap = time.time()
 
 #bound to text box for email
 email_addr = StringVar()
-email_addr.trace('w', delay_timelapse)
 
 w, h = root.winfo_screenwidth(), root.winfo_screenheight()
 
@@ -272,12 +270,6 @@ tkkb_button = Button(frame, command=launch_tkkb, text="Launch-KB")
 # tkkb_button.pack(side=LEFT)
 #send_button = Button(frame, text="SendEmail", command=sendPic, font=custom.BUTTON_FONT)
 #send_button.pack(side=RIGHT)
-
-if custom.TIMELAPSE > 0:
-    timelapse_label = Label(frame, text=custom.TIMELAPSE)
-else:
-    timelapse_label = Label(frame, text='')
-timelapse_label.pack(side=LEFT)
 
 ## add a text entry box for email addresses
 etext = Entry(frame,width=40, textvariable=email_addr, font=custom.BUTTON_FONT)

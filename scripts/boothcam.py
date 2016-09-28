@@ -109,6 +109,13 @@ def snap(can, countdown1, effect='None'):
             command = (['cp', custom.PROC_FILENAME, new_filename])
             call(command)
         camera = mycamera.PiCamera()
+        
+        can.delete("text")
+        can.update()
+        can.create_text(SCREEN_W/2 - 0, 200, text='Get Ready!', font=font, fill=custom.FONT_COLOR, tags="text")
+        can.update()
+        time.sleep(1)
+
         countdown(camera, can, countdown1)
         if effect == 'None':
             camera.capture(custom.RAW_FILENAME, resize=(1366, 768))
