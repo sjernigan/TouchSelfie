@@ -109,18 +109,6 @@ def display_image(im=None):
                      image=image_tk, 
                      tags="image")
 
-def timelapse_due():
-    '''
-    Return true if a time lapse photo is due to be taken (see custom.TIMELAPSE)
-    '''
-    if custom.TIMELAPSE > 0:
-        togo = custom.TIMELAPSE - (time.time() - last_snap)
-        timelapse_label.config(text=str(int(togo)))
-        out = togo < 0
-    else:
-        out = False
-    return out
-
 def refresh_oauth2_credentials():
     if custom.SIGN_ME_IN:
         if setup_google():
@@ -141,30 +129,28 @@ def check_and_snap(force=False, countdown1=None):
     if countdown1 is None:
         countdown1 = custom.countdown1
     if signed_in:
-        send_button.config(state=NORMAL)
+        #send_button.config(state=NORMAL)
         etext.config(state=NORMAL)
     else:
-        send_button.config(state=DISABLED)
+        #send_button.config(state=DISABLED)
         etext.config(state=DISABLED)
     if (Button_enabled == False):
         ## inform alamode that we are ready to receive button press events
         ## ser.write('e') #enable button (not used)
         Button_enabled = True
         # can.delete("text")
-        # can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Press button when ready", font=custom.CANVAS_FONT, tags="text")
+        # can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Press button when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
         # can.update()
         
     ## get command string from alamode
 #    command = ser.readline().strip()
     command=""
-    if Button_enabled and (force or command == "snap" or timelapse_due()):
+    if Button_enabled and (force or command == "snap"):
         ## take a photo and display it
         Button_enabled = False
         can.delete("text")
         can.update()
-        
-        if timelapse_due():
-            countdown1 = 0
+
         #change to take four pictures
         #im = snap(can, countdown1=countdown1, effect='None')
         im = snap(can, countdown1=countdown1, effect='Four')
@@ -176,7 +162,7 @@ def check_and_snap(force=False, countdown1=None):
             last_snap = time.time()
             display_image(im)
             can.delete("text")
-            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Now email it to yourself", font=custom.CANVAS_FONT, tags="text")
+            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Now email it to yourself", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
             can.update()
             if signed_in:
                 if custom.albumID == 'None':
@@ -197,7 +183,7 @@ def check_and_snap(force=False, countdown1=None):
                     
                     # signed_in = False
             can.delete("text")
-            # can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Press button when ready", font=custom.CANVAS_FONT, tags="text")
+            # can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Press button when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
             can.update()
     else:
         ### what command did we get?
@@ -247,13 +233,13 @@ def sendPic(*args):
         except Exception, e:
             print 'Send Failed::', e
             can.delete("all")
-            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Send Failed", font=custom.CANVAS_FONT, tags="text")
+            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Send Failed", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
             can.update()
             time.sleep(1)
             can.delete("all")
             im = Image.open(custom.PROC_FILENAME)
             display_image(im)
-            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Press button when ready", font=custom.CANVAS_FONT, tags="text")
+            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Press button when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
             can.update()
     else:
         print 'Not signed in'
@@ -326,12 +312,12 @@ if custom.SIGN_ME_IN:
 else:
     signed_in = False
 if not signed_in:
-    send_button.config(state=DISABLED)
+    #send_button.config(state=DISABLED)
     etext.config(state=DISABLED)
 
 ### take the first photo (no delay)
 can.delete("text")
-can.create_text(WIDTH/2, HEIGHT/2, text="SMILE ;-)", font=custom.CANVAS_FONT, tags="splash")
+can.create_text(WIDTH/2, HEIGHT/2, text="SMILE ;-)", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="splash")
 can.update()
 force_snap(countdown1=0)
 
@@ -342,7 +328,7 @@ if custom.SIGN_ME_IN:
 root.wm_title("Photobooth")
 etext.focus_set()
 # etext.bind("<Enter>", sendPic)
-on_rgb_change()
+#on_rgb_change()
 root.mainloop()
 
 

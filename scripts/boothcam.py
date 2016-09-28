@@ -78,7 +78,7 @@ def countdown(camera, can, countdown1):
     for i in range(countdown1):
         can.delete("text")
         can.update()
-        can.create_text(SCREEN_W/2 - 0, 200, text=str(countdown1 - i), font=font, tags="text")
+        can.create_text(SCREEN_W/2 - 0, 200, text=str(countdown1 - i), font=font, fill=custom.FONT_COLOR, tags="text")
         can.update()
         if i < countdown1 - 2:
             time.sleep(1)

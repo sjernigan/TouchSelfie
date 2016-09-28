@@ -81,6 +81,7 @@ restore_conf()
 ### set up GUI
 BUTTON_FONT = ('Times', 24)
 CANVAS_FONT = ("times", 50)
+FONT_COLOR = "orange"
 
 ## usually not need to change these.
 EXT = 'jpg'     
