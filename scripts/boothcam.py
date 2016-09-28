@@ -114,7 +114,7 @@ def snap(can, countdown1, effect='None'):
         can.update()
         can.create_text(SCREEN_W/2 - 0, 200, text='Get Ready!', font=font, fill=custom.FONT_COLOR, tags="text")
         can.update()
-        time.sleep(1)
+        time.sleep(2)
 
         countdown(camera, can, countdown1)
         if effect == 'None':

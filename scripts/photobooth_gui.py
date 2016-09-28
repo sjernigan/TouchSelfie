@@ -156,6 +156,8 @@ def check_and_snap(force=False, countdown1=None):
         im = snap(can, countdown1=countdown1, effect='Four')
         if im is not None:
             display_image(im)
+            can.update()
+            time.sleep(2)
             can.delete("text")
             can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Now email it to yourself", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
             can.update()
@@ -308,9 +310,6 @@ if not signed_in:
     etext.config(state=DISABLED)
 
 ### take the first photo (no delay)
-can.delete("text")
-can.create_text(WIDTH/2, HEIGHT/2, text="SMILE ;-)", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="splash")
-can.update()
 force_snap(countdown1=0)
 
 ### check button after waiting for 200 ms
