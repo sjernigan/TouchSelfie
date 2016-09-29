@@ -82,6 +82,23 @@ def kill_tkkb():
             tkkb = None
         except:
             pass
+    can.delete("text")
+    can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Send cancelled", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+    can.update()
+    time.sleep(3)
+    can.delete("all")
+    im = Image.open(custom.PROC_FILENAME)
+    display_image(im)
+    can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+    can.update()
+
+    time.sleep(10)
+    etext.delete(0, END)
+    can.delete("all")
+    im = Image.open(custom.SPLASH_FILENAME)
+    display_image(im)
+    can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+    can.update()
 
 
 def interrupted(signum, frame):
