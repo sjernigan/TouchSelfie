@@ -82,24 +82,24 @@ def kill_tkkb():
             tkkb = None
         except:
             pass
-    can.delete("text")
-    can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="OK", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
-    can.update()
-    time.sleep(3)
-    can.delete("all")
-    im = Image.open(custom.PROC_FILENAME)
-    display_image(im)
-    #can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
-    can.update()
+    # can.delete("text")
+    # can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="OK", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+    # can.update()
+    # time.sleep(3)
+    # can.delete("all")
+    # im = Image.open(custom.PROC_FILENAME)
+    # display_image(im)
+    # #can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+    # can.update()
 
-    time.sleep(10)
-    etext.delete(0, END)
-    can.delete("all")
-    im = Image.open(custom.SPLASH_FILENAME)
-    display_image(im)
-    can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
-    can.update()
-    can.focus_set()
+    # time.sleep(10)
+    # etext.delete(0, END)
+    # can.delete("all")
+    # im = Image.open(custom.SPLASH_FILENAME)
+    # display_image(im)
+    # can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+    # can.update()
+    # can.focus_set()
 
 
 def interrupted(signum, frame):
@@ -179,7 +179,7 @@ def check_and_snap(force=False, countdown1=None):
             can.delete("text")
             can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Now email it to yourself", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
             can.update()
-            time.sleep(2)
+            time.sleep(1.5)
             launch_tkkb()
             if signed_in:
                 if custom.albumID == 'None':
@@ -239,7 +239,6 @@ def sendPic(*args):
     elif email_addr.get() == "customize":
         custom.customize(root).pack(side=LEFT)
     elif signed_in:
-        print 'sending photo by email to %s' % email_addr.get()
         try:
             sendMail(email_addr.get().strip(),
                      custom.emailSubject,
@@ -248,25 +247,29 @@ def sendPic(*args):
             etext.delete(0, END)
             etext.focus_set()
             kill_tkkb()
+            can.delete("text")
+            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Sent", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+            can.update()
+            time.sleep(0.5)
+
         except Exception, e:
             print 'Send Failed::', e
             can.delete("text")
             can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Send failed, bad address", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
             can.update()
-            time.sleep(3)
+            time.sleep(2)
             can.delete("all")
             im = Image.open(custom.PROC_FILENAME)
             display_image(im)
             #can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
             can.update()
 
-            time.sleep(10)
-            etext.delete(0, END)
-            can.delete("all")
-            im = Image.open(custom.SPLASH_FILENAME)
-            display_image(im)
-            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
-            can.update()
+        etext.delete(0, END)
+        can.delete("all")
+        im = Image.open(custom.SPLASH_FILENAME)
+        display_image(im)
+        can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+        can.update()
     else:
         print 'Not signed in'
 

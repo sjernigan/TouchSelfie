@@ -69,6 +69,7 @@ oauth2_refresh_period = 1800000
     oauth2_refresh_period = int(conf.get('main', 'oauth2_refresh_period')) # 1800000
 
     #set up GPIO using BCM numbering
+    GPIO.setwarnings(False)
     GPIO.setmode(GPIO.BCM)
     #setup GPIO using Board numbering
     #GPIO.setmode(GPIO.BOARD)
