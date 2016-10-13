@@ -83,13 +83,13 @@ def kill_tkkb():
         except:
             pass
     can.delete("text")
-    can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Send cancelled", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+    can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="OK", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
     can.update()
     time.sleep(3)
     can.delete("all")
     im = Image.open(custom.PROC_FILENAME)
     display_image(im)
-    can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+    #can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
     can.update()
 
     time.sleep(10)
@@ -99,6 +99,7 @@ def kill_tkkb():
     display_image(im)
     can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
     can.update()
+    can.focus_set()
 
 
 def interrupted(signum, frame):
@@ -230,6 +231,7 @@ def force_snap(countdown1=None):
 
 #if they enter an email address send photo. add error checking
 def sendPic(*args):
+    print 'got %s' % email_addr.get()
     if email_addr.get() == "exit":
         if root.after_id is not None:
             root.after_cancel(root.after_id)
@@ -255,7 +257,7 @@ def sendPic(*args):
             can.delete("all")
             im = Image.open(custom.PROC_FILENAME)
             display_image(im)
-            can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
+            #can.create_text(WIDTH/2, HEIGHT - STATUS_H_OFFSET, text="Touch here when ready", font=custom.CANVAS_FONT, fill=custom.FONT_COLOR, tags="text")
             can.update()
 
             time.sleep(10)

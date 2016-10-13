@@ -73,6 +73,13 @@ class Shift(Key):
         for row in self.parent.rows:
             for k in row:
                 k.shift(self.state)
+class Cancel(Key):
+    def __init__(self, *args, **kw):
+        Key.__init__(self, *args, **kw)
+    def onPress(self):
+        self.entry.delete(0)
+        if self.c.onEnter is not None:
+            self.c.onEnter()
 class Gmail(Key):
     def __init__(self, *args, **kw):
         Key.__init__(self, *args, **kw)
@@ -154,12 +161,6 @@ class Tkkb:
                     (3.5 * (key_dim + pad), 4 * (key_dim + pad) + pad,
                      4 * (key_dim + pad) - pad, key_dim),
                     entry)
-        dotcom = Key(c, '.com', '.com',
-                        (10.5 * (key_dim + pad), 4 * (key_dim + pad) + pad,
-                         2 * (key_dim + pad) - pad, key_dim),
-                        entry,
-                        offx=20,
-                        fontsize=12)
 
         gmail = Gmail(c, '@gmail.com', '@gmail.com',
                         (7.5 * (key_dim + pad), 4 * (key_dim + pad) + pad,
@@ -167,7 +168,19 @@ class Tkkb:
                       entry,
                       offx=60,
                       fontsize=12)
-        rows.append([shift, space, gmail, dotcom])
+        dotcom = Key(c, '.com', '.com',
+                        (10.5 * (key_dim + pad), 4 * (key_dim + pad) + pad,
+                         2 * (key_dim + pad) - pad, key_dim),
+                        entry,
+                        offx=20,
+                        fontsize=12)
+        cancel = Cancel(c, 'Cancel', 'Cancel',
+                        (12.5 * (key_dim + pad), 4 * (key_dim + pad) + pad,
+                         3 * (key_dim + pad) - pad, key_dim),
+                      entry,
+                      offx=60,
+                      fontsize=12)
+        rows.append([shift, space, gmail, dotcom, cancel])
         backspace = BackSpace(c, 'backspace', 'backspace',
                               (
                                   13 * (key_dim + pad) + pad,
