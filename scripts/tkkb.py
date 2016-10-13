@@ -77,7 +77,7 @@ class Cancel(Key):
     def __init__(self, *args, **kw):
         Key.__init__(self, *args, **kw)
     def onPress(self):
-        self.entry.delete(0)
+        self.entry.delete(0, END)
         if self.c.onEnter is not None:
             self.c.onEnter()
 class Gmail(Key):
