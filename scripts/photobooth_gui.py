@@ -237,7 +237,7 @@ def sendPic(*args):
             root.after_cancel(root.after_id)
         root.quit()
     elif email_addr.get() == "customize":
-        custom.customize(root).pack(side=LEFT)
+        custom.customize(root)#.pack(side=LEFT)
     elif signed_in:
         try:
             sendMail(email_addr.get().strip(),

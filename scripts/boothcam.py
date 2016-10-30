@@ -105,7 +105,7 @@ def snap(can, countdown1, effect='None'):
 
     try:
         rawfile = custom.RAW_FILENAME
-        if custom.ARCHIVE and os.path.exists(custom.archive_dir) 
+        if custom.ARCHIVE and os.path.exists(custom.archive_dir): 
             rawfile = os.path.join(custom.archive_dir, '%s_%s.%s' %   (rawfile[:-4], datetime.datetime.now().strftime("%y-%m-%d-%H-%M-%S"), custom.EXT))
             if os.path.exists(custom.PROC_FILENAME):
                 ### copy image to archive

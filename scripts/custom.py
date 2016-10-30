@@ -1,3 +1,4 @@
+from subprocess import call
 import listalbums
 import Tkinter
 import tkFileDialog
@@ -261,9 +262,9 @@ def customize(master):
         logopng = logo_file
 
     def clear_archive():
-        command = (['cp', os.path.join(custom.archive_dir, custom.PROC_FILENAME[:-4], "*", custom.EXT)])
+        command = (['rm', os.path.join(archive_dir, '%s*.%s' % (PROC_FILENAME[:-4], EXT))])
         call(command)
-        command = (['cp', os.path.join(custom.archive_dir, custom.RAW_FILENAME[:-4], "*", custom.EXT)])
+        command = (['rm', os.path.join(archive_dir, '%s*.%s' % (RAW_FILENAME[:-4], EXT))])
         call(command)
 
     def archive_dialog():
