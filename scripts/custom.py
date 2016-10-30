@@ -20,9 +20,9 @@ def restore_conf():
     if not os.path.exists(conf_filename):
         conf_file = open(conf_filename, 'w')
         default_conf = '''[main]
-emailsubject = Your Postcard from the Wyolum Photobooth
-emailmsg = Here's your picture from the http://wyolum.com photobooth!
-photocaption = postcard from the xxx event
+emailsubject = Your Postcard from the Photobooth
+emailmsg = Here's your picture from the photobooth!
+photocaption = postcard from the party
 logopng = logo.png
 
 albumid = None
