@@ -2,7 +2,7 @@ import listalbums
 import Tkinter
 import tkFileDialog
 import tkSimpleDialog
-import os.path
+import os
 import Image
 import ImageTk
 import ConfigParser
@@ -260,6 +260,12 @@ def customize(master):
         logo_var.set(logo_file)
         logopng = logo_file
 
+    def clear_archive():
+        command = (['cp', os.path.join(custom.archive_dir, custom.PROC_FILENAME[:-4], "*", custom.EXT)])
+        call(command)
+        command = (['cp', os.path.join(custom.archive_dir, custom.RAW_FILENAME[:-4], "*", custom.EXT)])
+        call(command)
+
     def archive_dialog():
         options = {}
         options['initialdir'] = '/media'
@@ -295,6 +301,7 @@ def customize(master):
     archive_var.trace('w', curry(update_archive, archive_entry))
     Tkinter.Button(archive_frame, text='Browse', command=archive_dialog).pack(side=Tkinter.LEFT)
     archive_frame.pack(side=Tkinter.TOP)
+    Tkinter.Button(archive_frame, text='Clear Archive', command=clear_archive).pack(side=Tkinter.LEFT)
 
     logo_var = Tkinter.StringVar()
     logo_var.set(logopng)
