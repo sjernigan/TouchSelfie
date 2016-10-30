@@ -1,4 +1,5 @@
-from subprocess import call
+import subprocess
+#from subprocess import call
 import listalbums
 import Tkinter
 import tkFileDialog
@@ -262,10 +263,12 @@ def customize(master):
         logopng = logo_file
 
     def clear_archive():
-        command = (['rm', os.path.join(archive_dir, '%s*.%s' % (PROC_FILENAME[:-4], EXT))])
-        call(command)
-        command = (['rm', os.path.join(archive_dir, '%s*.%s' % (RAW_FILENAME[:-4], EXT))])
-        call(command)
+        subprocess.Popen('rm ' + os.path.join(archive_dir, '%s*.%s' % (PROC_FILENAME[:-4], EXT)), shell=True,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
+        subprocess.Popen('rm ' + os.path.join(archive_dir, '%s*.%s' % (RAW_FILENAME[:-4], EXT)), shell=True,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.PIPE)
 
     def archive_dialog():
         options = {}

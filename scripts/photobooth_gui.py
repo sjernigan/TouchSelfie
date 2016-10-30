@@ -231,7 +231,7 @@ def force_snap(countdown1=None):
 
 #if they enter an email address send photo. add error checking
 def sendPic(*args):
-    print 'got %s' % email_addr.get()
+    #print 'got %s' % email_addr.get()
     if email_addr.get() == "exit":
         if root.after_id is not None:
             root.after_cancel(root.after_id)
