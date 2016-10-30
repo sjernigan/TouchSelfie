@@ -4,6 +4,8 @@ import glob
 import os
 import os.path
 import time
+import datetime
+
 try:
     import picamera as mycamera
 except ImportError:
@@ -102,12 +104,15 @@ def snap(can, countdown1, effect='None'):
     global image_idx
 
     try:
-        if custom.ARCHIVE and os.path.exists(custom.archive_dir) and os.path.exists(custom.PROC_FILENAME):
-            ### copy image to archive
-            image_idx += 1
-            new_filename = os.path.join(custom.archive_dir, '%s_%05d.%s' % (custom.PROC_FILENAME[:-4], image_idx, custom.EXT))
-            command = (['cp', custom.PROC_FILENAME, new_filename])
-            call(command)
+        rawfile = custom.RAW_FILENAME
+        if custom.ARCHIVE and os.path.exists(custom.archive_dir) 
+            rawfile = os.path.join(custom.archive_dir, '%s_%s.%s' %   (rawfile[:-4], datetime.datetime.now().strftime("%y-%m-%d-%H-%M-%S"), custom.EXT))
+            if os.path.exists(custom.PROC_FILENAME):
+                ### copy image to archive
+                image_idx += 1
+                new_filename = os.path.join(custom.archive_dir, '%s_%05d.%s' % (custom.PROC_FILENAME[:-4], image_idx, custom.EXT))
+                command = (['cp', custom.PROC_FILENAME, new_filename])
+                call(command)
         camera = mycamera.PiCamera()
         
         can.delete("text")
@@ -118,8 +123,8 @@ def snap(can, countdown1, effect='None'):
 
         countdown(camera, can, countdown1)
         if effect == 'None':
-            camera.capture(custom.RAW_FILENAME, resize=(1366, 768))
-            snapshot = Image.open(custom.RAW_FILENAME)
+            camera.capture(rawfile, resize=(1366, 768))
+            snapshot = Image.open(rawfile)
             if custom.logo is not None:
                 # snapshot.paste(logo,(0,SCREEN_H -lysize ),logo)
                 # snapshot.paste(custom.logo,(SCREEN_W/2 - custom.logo.size[0]/2,
@@ -135,45 +140,45 @@ def snap(can, countdown1, effect='None'):
             #  set light to R, take photo, G, take photo, B, take photo, Y, take photo
             # merge results into one image
             setLights(255, 0, 0) ## RED
-            camera.capture(custom.RAW_FILENAME[:-4] + '_1.' + custom.EXT, resize=(683, 384))
+            camera.capture(rawfile[:-4] + '_1.' + custom.EXT, resize=(683, 384))
             setLights(0, 255, 0) ## GREEN
-            camera.capture(custom.RAW_FILENAME[:-4] + '_2.' + custom.EXT, resize=(683, 384))
+            camera.capture(rawfile[:-4] + '_2.' + custom.EXT, resize=(683, 384))
             setLights(0, 0, 255) ## BLUE
-            camera.capture(custom.RAW_FILENAME[:-4] + '_3.' + custom.EXT, resize=(683, 384))
+            camera.capture(rawfile[:-4] + '_3.' + custom.EXT, resize=(683, 384))
             setLights(180, 180, 0) ## yellow of same intensity
-            camera.capture(custom.RAW_FILENAME[:-4] + '_4.' + custom.EXT, resize=(683, 384))
+            camera.capture(rawfile[:-4] + '_4.' + custom.EXT, resize=(683, 384))
 
             snapshot = Image.new('RGBA', (1366, 768))
-            snapshot.paste(Image.open(custom.RAW_FILENAME[:-4] + '_1.' + custom.EXT).resize((683, 384)), (  0,   0,  683, 384))
-            snapshot.paste(Image.open(custom.RAW_FILENAME[:-4] + '_2.' + custom.EXT).resize((683, 384)), (683,   0, 1366, 384))
-            snapshot.paste(Image.open(custom.RAW_FILENAME[:-4] + '_3.' + custom.EXT).resize((683, 384)), (  0, 384,  683, 768))
-            snapshot.paste(Image.open(custom.RAW_FILENAME[:-4] + '_4.' + custom.EXT).resize((683, 384)), (683, 384, 1366, 768))
+            snapshot.paste(Image.open(rawfile[:-4] + '_1.' + custom.EXT).resize((683, 384)), (  0,   0,  683, 384))
+            snapshot.paste(Image.open(rawfile[:-4] + '_2.' + custom.EXT).resize((683, 384)), (683,   0, 1366, 384))
+            snapshot.paste(Image.open(rawfile[:-4] + '_3.' + custom.EXT).resize((683, 384)), (  0, 384,  683, 768))
+            snapshot.paste(Image.open(rawfile[:-4] + '_4.' + custom.EXT).resize((683, 384)), (683, 384, 1366, 768))
         elif effect == "Four":
             # take 4 photos and merge into one image.
             GPIO.output(18, GPIO.HIGH)  #3.3v
-            camera.capture(custom.RAW_FILENAME[:-4] + '_1.' + custom.EXT, resize=(683, 384))
+            camera.capture(rawfile[:-4] + '_1.' + custom.EXT, resize=(683, 384))
             GPIO.output(18, GPIO.LOW)
             countdown(camera, can, custom.countdown2)
 
             GPIO.output(18, GPIO.HIGH)  #3.3v
-            camera.capture(custom.RAW_FILENAME[:-4] + '_2.' + custom.EXT, resize=(683, 384))
+            camera.capture(rawfile[:-4] + '_2.' + custom.EXT, resize=(683, 384))
             GPIO.output(18, GPIO.LOW)
             countdown(camera, can, custom.countdown2)
 
             GPIO.output(18, GPIO.HIGH)  #3.3v
-            camera.capture(custom.RAW_FILENAME[:-4] + '_3.' + custom.EXT, resize=(683, 384))
+            camera.capture(rawfile[:-4] + '_3.' + custom.EXT, resize=(683, 384))
             GPIO.output(18, GPIO.LOW)
             countdown(camera, can, custom.countdown2)
 
             GPIO.output(18, GPIO.HIGH)  #3.3v
-            camera.capture(custom.RAW_FILENAME[:-4] + '_4.' + custom.EXT, resize=(683, 384))
+            camera.capture(rawfile[:-4] + '_4.' + custom.EXT, resize=(683, 384))
             GPIO.output(18, GPIO.LOW)
 
             snapshot = Image.new('RGBA', (1366, 768))
-            snapshot.paste(Image.open(custom.RAW_FILENAME[:-4] + '_1.' + custom.EXT).resize((683, 384)), (  0,   0,  683, 384))
-            snapshot.paste(Image.open(custom.RAW_FILENAME[:-4] + '_2.' + custom.EXT).resize((683, 384)), (683,   0, 1366, 384))
-            snapshot.paste(Image.open(custom.RAW_FILENAME[:-4] + '_3.' + custom.EXT).resize((683, 384)), (  0, 384,  683, 768))
-            snapshot.paste(Image.open(custom.RAW_FILENAME[:-4] + '_4.' + custom.EXT).resize((683, 384)), (683, 384, 1366, 768))
+            snapshot.paste(Image.open(rawfile[:-4] + '_1.' + custom.EXT).resize((683, 384)), (  0,   0,  683, 384))
+            snapshot.paste(Image.open(rawfile[:-4] + '_2.' + custom.EXT).resize((683, 384)), (683,   0, 1366, 384))
+            snapshot.paste(Image.open(rawfile[:-4] + '_3.' + custom.EXT).resize((683, 384)), (  0, 384,  683, 768))
+            snapshot.paste(Image.open(rawfile[:-4] + '_4.' + custom.EXT).resize((683, 384)), (683, 384, 1366, 768))
             
             if custom.logo is not None:
                 # snapshot.paste(logo,(0,SCREEN_H -lysize ),logo)
